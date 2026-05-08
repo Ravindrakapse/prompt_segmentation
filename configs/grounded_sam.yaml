@@ -1,0 +1,52 @@
+# Grounded-SAM (Grounding DINO + SAM) fine-tuned on the unified task pool.
+# Two-stage independent training; bboxes from GT masks via connected components.
+seed: 42
+
+tasks:
+  - name: crack
+    dataset_dir: "data/processed/crack"
+    prompts:
+      - "segment crack"
+      - "segment wall crack"
+      - "a crack on the wall"
+      - "thin crack line"
+    eval_prompt: "segment crack"
+  - name: taping
+    dataset_dir: "data/processed/taping"
+    prompts:
+      - "segment taping area"
+      - "segment joint tape"
+      - "segment drywall seam"
+      - "drywall joint"
+    eval_prompt: "segment taping area"
+
+data:
+  num_workers: 4
+  pin_memory: true
+
+grounded_sam:
+  gd_pretrained: "IDEA-Research/grounding-dino-tiny"
+  sam_pretrained: "facebook/sam-vit-base"
+  box_threshold: 0.25
+  text_threshold: 0.20
+  multi_prompt_union: true
+
+grounded_sam_train:
+  gd:
+    epochs: 3
+    batch_size: 8
+    lr: 1.0e-5
+    weight_decay: 1.0e-4
+    warmup_steps: 200
+    log_every: 20
+    ckpt_dir: "outputs/checkpoints/gd_finetuned"
+    log_dir: "outputs/logs/gd_finetuned"
+  sam:
+    epochs: 3
+    batch_size: 4
+    lr: 1.0e-4
+    weight_decay: 1.0e-4
+    warmup_steps: 200
+    log_every: 20
+    ckpt_dir: "outputs/checkpoints/sam_finetuned"
+    log_dir: "outputs/logs/sam_finetuned"

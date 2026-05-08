@@ -1,0 +1,27 @@
+# YOLOE (open-vocab YOLO11 + text-prompted seg head) fine-tuned.
+# yoloe-11s-seg backbone @ imgsz 640, 30 epochs, prompt augmentation.
+# Best YOLOE variant from ablation — wins all metrics + fastest.
+seed: 42
+
+tasks:
+  - name: crack
+    dataset_dir: "data/processed/crack"
+    prompts: ["segment crack", "segment wall crack", "a crack on the wall", "thin crack line"]
+    eval_prompt: "segment crack"
+  - name: taping
+    dataset_dir: "data/processed/taping"
+    prompts: ["segment taping area", "segment joint tape", "segment drywall seam", "drywall joint"]
+    eval_prompt: "segment taping area"
+
+yoloe:
+  weights: "yoloe-11s-seg.pt"
+  imgsz: 640
+  conf: 0.05
+
+yoloe_train:
+  data_yaml: "data/processed/yolo_unified/dataset.yaml"
+  epochs: 30
+  batch_size: 32
+  imgsz: 640
+  ckpt_dir: "outputs/checkpoints/yoloe"
+  prompt_augmentation: true

@@ -1,0 +1,77 @@
+# CLIPSeg fine-tune — single unified model, both classes via prompt.
+# Loss: focal BCE (γ=2) + Dice. Best CLIPSeg variant from ablation.
+seed: 42
+
+tasks:
+  - name: crack
+    dataset_dir: "data/processed/crack"
+    prompts:
+      - "segment crack"
+      - "segment wall crack"
+      - "a crack on the wall"
+      - "thin crack line"
+    eval_prompt: "segment crack"
+  - name: taping
+    dataset_dir: "data/processed/taping"
+    prompts:
+      - "segment taping area"
+      - "segment joint tape"
+      - "segment drywall seam"
+      - "drywall joint"
+    eval_prompt: "segment taping area"
+
+model:
+  name: clipseg
+  pretrained: "CIDAS/clipseg-rd64-refined"
+  freeze_clip: true
+  unfreeze_decoder: true
+  unfreeze_film: true
+  unfreeze_visual_adapter: false
+
+data:
+  input_size: 352
+  full_res_eval: true
+  num_workers: 4
+  pin_memory: true
+
+train:
+  epochs: 30
+  batch_size: 16
+  optimizer: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  warmup_steps: 300
+  amp: true
+  log_every: 20
+  ckpt_dir: "outputs/checkpoints/clipseg"
+  log_dir: "outputs/logs/clipseg"
+  early_stop_patience: 6
+  monitor: "val/dice_mean"
+  neg_prob: 0.3
+  balanced_sampler: true
+
+loss:
+  type: "focal_dice"
+  gamma: 2.0
+  bce_weight: 0.5
+  dice_weight: 0.5
+  pos_weight: 5.0
+
+augmentation:
+  resize: 352
+  crop_size: 352
+  hflip_p: 0.5
+  vflip_p: 0.2
+  rotate_limit: 15
+  brightness_contrast_p: 0.3
+  blur_p: 0.1
+  noise_p: 0.1
+
+inference:
+  threshold: 0.5
+  tta: true
+  multi_prompt_avg: true
+
+eval:
+  metrics: [iou, dice, precision, recall]

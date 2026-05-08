@@ -1,0 +1,24 @@
+# data + outputs (regenerated)
+data/
+outputs/
+runs/
+
+# pretrained ckpts pulled at runtime
+*.pt
+!.gitkeep
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+
+# editor / OS
+.idea/
+.vscode/
+.DS_Store
+
+# logs
+*.log
