@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # YOLOE per-task predict + eval + visualize. Auto-picks fine-tuned ckpt at
 # outputs/checkpoints/yoloe/best.pt; else falls back to cfg.yoloe.weights (zero-shot).
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg

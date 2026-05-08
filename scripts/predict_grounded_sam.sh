@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Run Grounded-SAM (Grounding DINO + SAM) per task. Auto-picks fine-tuned
 # ckpts at outputs/checkpoints/{gd,sam}_finetuned/best/ if present, else zero-shot.
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg

@@ -5,7 +5,7 @@
 # Output: data/processed/<task>/{images,masks}/{train,val,test}/
 # Also builds YOLO-seg copy at data/processed/yolo_unified/ (for yoloe).
 # Requires: ROBOFLOW_API_KEY env var.
-set -euo pipefail
+set -eo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"

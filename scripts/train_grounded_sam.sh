@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Fine-tune Grounding DINO + SAM mask decoder (independently).
 # After both, scripts/predict_grounded_sam.sh auto-picks fine-tuned ckpts.
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg

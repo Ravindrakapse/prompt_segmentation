@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Setup conda env. Run once on a GPU box.
-set -euo pipefail
+set -eo pipefail   # drop -u; conda's MKL activate.d reads unbound vars
 
 ENV_NAME="prompt_seg"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

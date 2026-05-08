@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Per-task predict + threshold-sweep eval + visualize, single CLIPSeg ckpt.
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg

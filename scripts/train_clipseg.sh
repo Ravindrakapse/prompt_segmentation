@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Train CLIPSeg fine-tune (single ckpt, both classes via prompt).
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg

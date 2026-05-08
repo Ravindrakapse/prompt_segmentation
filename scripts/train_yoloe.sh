@@ -3,7 +3,7 @@
 # 1. (one-time) build YOLO seg dataset from processed masks
 # 2. fine-tune via ultralytics YOLOEPESegTrainer
 # 3. best.pt copied to outputs/checkpoints/yoloe/best.pt
-set -euo pipefail
+set -eo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate prompt_seg
