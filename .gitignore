@@ -1,7 +1,9 @@
-# data + outputs (regenerated)
-data/
-outputs/
-runs/
+# data + outputs (regenerated). Anchored at repo root so src/data/ is NOT ignored.
+/data/
+/outputs/
+/runs/
+/cracks-1/
+/Drywall-Join-Detect-2/
 
 # pretrained ckpts pulled at runtime
 *.pt
