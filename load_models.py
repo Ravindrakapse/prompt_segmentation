@@ -103,15 +103,35 @@ def load_yoloe():
 
 
 def predict_yoloe(model, image_bgr, prompt, imgsz=640, conf=0.05):
+    """YOLOE was trained with 2 classes (crack, taping). The head's softmax
+    dimensionality is fixed at 2, so we must always register exactly 2 class
+    names. The user's prompt is bound to whichever slot semantically matches
+    (crack-like → slot 0, taping-like → slot 1); the other slot is filled
+    with a benign placeholder. Detections of the unmatched slot are filtered
+    out before unioning the masks.
+    """
     img_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
     H, W = img_rgb.shape[:2]
-    classes = [prompt]  # treat prompt as class
+
+    # Decide which trained slot the user's prompt maps to.
+    p_low = prompt.lower()
+    if any(k in p_low for k in ("taping", "tape", "seam", "joint", "drywall")):
+        target_idx = 1
+        classes = ["crack", prompt]            # slot 0 unused but kept consistent
+    else:
+        target_idx = 0
+        classes = [prompt, "taping"]           # slot 1 unused
+
     text_pe = model.get_text_pe(classes)
     model.set_classes(classes, text_pe)
     res = model.predict(img_rgb, imgsz=imgsz, conf=conf, verbose=False)[0]
     if res.masks is None or len(res.masks) == 0:
         return np.zeros((H, W), dtype=np.uint8)
-    m = res.masks.data.cpu().numpy()  # (N, h, w) at imgsz
+    cls_ids = res.boxes.cls.cpu().numpy().astype(int)
+    keep = cls_ids == target_idx
+    if not keep.any():
+        return np.zeros((H, W), dtype=np.uint8)
+    m = res.masks.data.cpu().numpy()[keep]     # (n_keep, h, w)
     union = (m.sum(axis=0) > 0).astype(np.uint8)
     union = cv2.resize(union, (W, H), interpolation=cv2.INTER_NEAREST) * 255
     return union
