@@ -134,8 +134,8 @@ Artifacts:
 
 | Task | Source | Split |
 | --- | --- | --- |
-| Crack  | Roboflow [`ravindra-kapse/cracks-3ii36-fdqni`](https://universe.roboflow.com/ravindra-kapse/cracks-3ii36-fdqni) v1 | train 5146 / val 103 / test 102 |
-| Taping | Roboflow [`objectdetect-pu6rn/drywall-join-detect`](https://universe.roboflow.com/objectdetect-pu6rn/drywall-join-detect) v2 | train 820 / val 101 / test 101 |
+| Crack  | Roboflow [`ravindra-kapse/cracks-3ii36-fdqni`](https://universe.roboflow.com/ravindra-kapse/cracks-3ii36-fdqni) v1 | train 4295 / val 537 / test 537 |
+| Taping | Roboflow [`objectdetect-pu6rn/drywall-join-detect`](https://universe.roboflow.com/objectdetect-pu6rn/drywall-join-detect) v2 | train 818 / val 102 / test 102 |
 
 Downloaders (`src/data/download.py`) deterministically rebalance val:test 50/50
 (seed 42) so each task has a meaningful test split.
